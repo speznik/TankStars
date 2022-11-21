@@ -31,19 +31,24 @@ public class Scores implements Disposable {
     Image menu;
     ProgressBar healthbar1;
     ProgressBar healthbar2;
+    ProgressBar fuelbar1;
+    ProgressBar fuelbar2;
     Image resumegamebutton;
     Image savegamebutton;
     Image exitgamebutton;
     ImageButton menubutton;
     Skin skin;
+    Skin skin1;
     MyGdxGame game;
-    public Scores(MyGdxGame game,float width,float height,String gameId){
+    public Scores(MyGdxGame game,float width,float height,String gameId,final int tankId1,final int tankId2){
         this.sp=game.batch;
         this.game=game;
+
         final Preferences preferences=Gdx.app.getPreferences("preferences");
         final String saved = preferences.getString("saved", "");
-        String[] gameData=new String[]{"0","0","0","0","100","100"};
-        if(!gameId.equals("")) gameData = preferences.getString("game" + gameId, "0,0,0,0,100,100").split(",");
+        String[] gameData=new String[]{"0","0","0","0","100","100","80","80",""+tankId1,""+tankId2};
+//        String[] gameData1=new String[]{"80","80"};
+        if(!gameId.equals("")) gameData = preferences.getString("game" + gameId, "0,0,0,0,100,100,80,80,"+tankId1+","+tankId2).split(",");
         viewport= new FitViewport(width,height,new OrthographicCamera());
         stage=new Stage(viewport, game.batch);
 
@@ -52,6 +57,8 @@ public class Scores implements Disposable {
         table.setFillParent(true);
         skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
         skin.getFont("font").getData().setScale(6);
+        skin1 = new Skin(Gdx.files.internal("pixthulhu/skin/pixthulhu-ui.json"));
+        skin1.getFont("font").getData().setScale(6);
 //        p1scorelabel=new Label("100",skin);
 //        p2scorelabel=new Label("100",skin);
 
@@ -65,6 +72,13 @@ public class Scores implements Disposable {
         menu=new Image(texture);
         healthbar1=new ProgressBar(0,100,5,false,skin);
         healthbar2=new ProgressBar(0,100,5,false,skin);
+
+        fuelbar1=new ProgressBar(0,80,20,false,skin1);
+        fuelbar2=new ProgressBar(0,80,20,false,skin1);
+
+        fuelbar1.setValue(Float.parseFloat(gameData[6]));
+        fuelbar2.setValue(Float.parseFloat(gameData[7]));
+
         healthbar1.setValue(Float.parseFloat(gameData[4]));
         healthbar2.setValue(Float.parseFloat(gameData[5]));
 
@@ -90,6 +104,9 @@ public class Scores implements Disposable {
 //        table.row()
         table.add(healthbar2).width(width/2-40).padLeft(20);
 //
+        table.row().pad(20);
+        table.add(fuelbar1).width(width/3-40).align(Align.left);
+        table.add(fuelbar2).width(width/3-40).align(Align.right).padLeft(20);
         table.row();
 
         resumegamebutton=new Image(texture3);
@@ -115,7 +132,7 @@ public class Scores implements Disposable {
                 String newSaved = gameId + "," + saved;
 
                 preferences.putString("saved", newSaved);
-                preferences.putString("game" + gameId, "0,0,0,0,"+healthbar1.getValue()+","+healthbar2.getValue());
+                preferences.putString("game" + gameId, "0,0,0,0,"+healthbar1.getValue()+","+healthbar2.getValue()+","+fuelbar1.getValue()+","+fuelbar2.getValue()+","+tankId1+","+tankId2);
                 preferences.flush();
 
                 menuShowing=!menuShowing;

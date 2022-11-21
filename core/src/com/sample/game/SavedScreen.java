@@ -58,12 +58,13 @@ public class SavedScreen implements Screen {
 
             final String gameId = savedGamesArray[i];
 
+
             TextButton playButton =new TextButton("Play", skin);
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    game.setScreen(new GameScreen2(game, gameId));
+                    game.setScreen(new GameScreen2(game, gameId,0,0));
                     dispose();
                 }
             });

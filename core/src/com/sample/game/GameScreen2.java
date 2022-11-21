@@ -50,8 +50,23 @@ public class GameScreen2 implements Screen {
     float bgWidth, bgHeight;
     float buttonwidth,buttonheight;
     Scores scores;
-    public GameScreen2(MyGdxGame game,String gameId) {
+    float tankheigth;
+//    float tankratio1;
+    float tankwidth1;
+    float tankwidth2;
+    public int tankId1;
+    public int tankId2;
+
+    public GameScreen2(MyGdxGame game,String gameId,int tankId1,int tankId2) {
+        Preferences preferences=Gdx.app.getPreferences("prefrences");
+        if(!gameId.equals("")) {
+            String[] gameData = preferences.getString("game" + gameId, "0,0,0,0,100,100,80,80,"+tankId1+","+tankId2).split(",");
+            tankId1=Integer.parseInt(gameData[8]);
+            tankId2=Integer.parseInt(gameData[9]);
+        }
         this.Game=game;
+        this.tankId1=tankId1;
+        this.tankId2=tankId2;
 //        batch = new SpriteBatch();
         polygonSpriteBatch = new PolygonSpriteBatch();
 
@@ -72,8 +87,11 @@ public class GameScreen2 implements Screen {
         textureRegion = new TextureRegion(hillTexture);
         textureRegion.setRegion(0, 0, hillTexture.getWidth() * 10, hillTexture.getHeight() * 10);
 
-        p1Texture = prepareTexture("TankStarsFeature\\Tank1.png");
-        p2Texture = prepareTexture("TankStarsFeature\\Tank0.png");
+        String[] tankTextures1={"TankStarsFeature\\Tank4.png","TankStarsFeature\\Tank1.png","TankStarsFeature\\toxictank.jpg"};
+        String[] tankTextures2={"TankStarsFeature\\Tank0.png","TankStarsFeature\\Tank5.png","TankStarsFeature\\toxictank.jpg"};
+
+        p1Texture = prepareTexture(tankTextures1[tankId1]);
+        p2Texture = prepareTexture(tankTextures2[tankId2]);
 
         // Camera
         camera = new OrthographicCamera();
@@ -85,11 +103,18 @@ public class GameScreen2 implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         hill = createBody(0, 0, 0, 0, true, false);
-        player1 = createBody(200, Gdx.graphics.getHeight() + playerSize / 2, playerSize, playerSize, false, true);
-        player2 = createBody(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight()+ playerSize / 2, playerSize, playerSize, false, true);
+
+        tankheigth = playerSize;
+        float tankratio1 = (float) p1Texture.getWidth() / p1Texture.getHeight();
+        float tankratio2=(float) p2Texture.getWidth()/ p2Texture.getHeight();
+        tankwidth1 = tankratio1 * tankheigth;
+        tankwidth2=tankratio2*tankheigth;
+
+        player1 = createBody(200, Gdx.graphics.getHeight() + playerSize / 2, tankwidth1, tankheigth, false, true);
+        player2 = createBody(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight()+ playerSize / 2, tankwidth2, tankheigth, false, true);
 
 
-        scores=new Scores(Game,Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),gameId);
+        scores=new Scores(Game,Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),gameId,tankId1,tankId2);
 //        Preferences preferences = Gdx.app.getPreferences("preferences");
 
 //        if (!gameId.equals("")) {
@@ -238,8 +263,8 @@ public class GameScreen2 implements Screen {
         Game.batch.setProjectionMatrix(camera.combined);
         Game.batch.begin();
         Game.batch.draw(button1, middlex, middley,buttonwidth,buttonheight);
-        Game.batch.draw(p1Texture, player1.getPosition().x * PPM - playerSize / 2, player1.getPosition().y * PPM - playerSize / 2, playerSize, playerSize);
-        Game.batch.draw(p2Texture, player2.getPosition().x * PPM - playerSize / 2, player2.getPosition().y * PPM - playerSize / 2, playerSize, playerSize);
+        Game.batch.draw(p1Texture, player1.getPosition().x * PPM - tankwidth1 / 2, player1.getPosition().y * PPM - tankheigth / 2, tankwidth1, tankheigth);
+        Game.batch.draw(p2Texture, player2.getPosition().x * PPM - tankwidth2 / 2, player2.getPosition().y * PPM - tankheigth / 2, tankwidth2, tankheigth);
         Game.batch.end();
 
 
