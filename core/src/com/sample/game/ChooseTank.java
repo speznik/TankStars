@@ -48,7 +48,7 @@ public class ChooseTank implements Screen {
         this.Game = game;
         tank1 = new Texture("TankStarsFeature\\Tank4.png");
         tank2 = new Texture("TankStarsFeature\\Tank1.png");
-        tank3=new Texture("TankStarsFeature\\toxictank.jpg");
+        tank3=new Texture("TankStarsFeature\\Tank6.png");
 
         tankheigth = Gdx.graphics.getHeight() / 15f;
         float tankratio1 = (float) tank1.getWidth() / tank1.getHeight();

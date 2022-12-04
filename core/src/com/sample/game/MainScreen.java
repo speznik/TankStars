@@ -69,9 +69,9 @@ public class MainScreen implements Screen {
             camera.unproject(touchPos);
 
             if (btn1Bounds.contains(touchPos.x, touchPos.y)) {
-//                Game.setScreen(new GameScreen2(Game,""));
+                Game.setScreen(new GameScreen2(Game,"",0,1));
 //                Game.setScreen(new GameScreen(Game, ""));
-                Game.setScreen(new ChooseTank(Game));
+//                Game.setScreen(new ChooseTank(Game));
                 dispose();
             }
 

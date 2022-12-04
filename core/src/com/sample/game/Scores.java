@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import sun.tools.jconsole.Tab;
+//import sun.tools.jconsole.Tab;
 
 public class Scores implements Disposable {
     SpriteBatch sp;
@@ -28,6 +28,8 @@ public class Scores implements Disposable {
     boolean menuShowing;
     private Label p1scorelabel;
     private Label p2scorelabel;
+    private Label p3scorelabel;
+    private Label p4scorelabel;
     Image menu;
     ProgressBar healthbar1;
     ProgressBar healthbar2;
@@ -59,8 +61,10 @@ public class Scores implements Disposable {
         skin.getFont("font").getData().setScale(6);
         skin1 = new Skin(Gdx.files.internal("pixthulhu/skin/pixthulhu-ui.json"));
         skin1.getFont("font").getData().setScale(6);
-//        p1scorelabel=new Label("100",skin);
-//        p2scorelabel=new Label("100",skin);
+        p1scorelabel=new Label("Health",skin);
+        p2scorelabel=new Label("Health",skin);
+        p3scorelabel=new Label("Fuel",skin);
+        p4scorelabel=new Label("Fuel",skin);
 
 //        menubutton=new ImageButton();
         Texture texture=new Texture("TankStarsFeature\\Component1.png");
@@ -103,7 +107,9 @@ public class Scores implements Disposable {
         table.add(healthbar1).width(width/2-40);
 //        table.row()
         table.add(healthbar2).width(width/2-40).padLeft(20);
-//
+        table.row();
+        table.add(p3scorelabel).align(Align.left).pad(10).expandX();
+        table.add(p4scorelabel).align(Align.right).pad(10);
         table.row().pad(20);
         table.add(fuelbar1).width(width/3-40).align(Align.left);
         table.add(fuelbar2).width(width/3-40).align(Align.right).padLeft(20);
@@ -152,7 +158,7 @@ public class Scores implements Disposable {
         });
         Table table2=new Table();
         table2.setFillParent(true);
-        table2.top().padTop(225);
+        table2.top().padTop(300);
         table2.add(resumegamebutton);
         table2.row().padTop(20).padBottom(10);
         table2.add(savegamebutton);
@@ -174,6 +180,10 @@ public class Scores implements Disposable {
 //        table.row();
 //        table.add(exitgamebutton).pad(10);
 //    }
+    public void onHit(boolean isTank1){
+        if(isTank1) healthbar1.setValue(healthbar1.getValue()-10);
+        else healthbar2.setValue((healthbar2.getValue()-10));
+    }
     @Override
     public void dispose() {
         stage.dispose();
