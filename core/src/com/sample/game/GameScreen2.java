@@ -309,39 +309,48 @@ public class GameScreen2 implements Screen {
             // If New Game then Assign Vertices Array
             if (vertices == null) {
                 vertices = new Vector2[302];
+
+
+                // Create Vertice from Vector2 Coords
+                vertices[0] = new Vector2(lastX, lastY);
+
+                // Draw From Bottom to Top
+                lastY = screenHeight / 1.5f;
+
+                // Create Next Vertice
+                vertices[1] = new Vector2(lastX, lastY);
+
+
+                // Loop For Drawing Next Vertices In Sets of Four
+                for (int i = 2; i < vertices.length; i += 4) {
+                    // ---\
+                    lastX = randomPoint(true, lastX, true);
+                    speedbreaker.add(lastX);
+                    vertices[i] = new Vector2(lastX, lastY);
+
+                    // \__
+                    lastX = randomPoint(true, lastX, true);
+                    lastY = randomPoint(false, lastY, false);
+                    vertices[i + 1] = new Vector2(lastX, lastY);
+
+                    // __/
+                    lastX = randomPoint(true, lastX, true);
+                    vertices[i + 2] = new Vector2(lastX, lastY);
+
+                    // /--
+                    lastX = randomPoint(true, lastX, true);
+                    speedbreaker.add(lastX);
+                    lastY = randomPoint(false, lastY, true);
+                    vertices[i + 3] = new Vector2(lastX, lastY);
+                }
             }
 
-            // Create Vertice from Vector2 Coords
-            vertices[0] = new Vector2(lastX, lastY);
-
-            // Draw From Bottom to Top
-            lastY = screenHeight / 1.5f;
-
-            // Create Next Vertice
-            vertices[1] = new Vector2(lastX, lastY);
-
-
-            // Loop For Drawing Next Vertices In Sets of Four
-            for (int i = 2; i < vertices.length; i += 4) {
-                // ---\
-                lastX = randomPoint(true, lastX, true);
-                speedbreaker.add(lastX);
-                vertices[i] = new Vector2(lastX, lastY);
-
-                // \__
-                lastX = randomPoint(true, lastX, true);
-                lastY = randomPoint(false, lastY, false);
-                vertices[i + 1] = new Vector2(lastX, lastY);
-
-                // __/
-                lastX = randomPoint(true, lastX, true);
-                vertices[i + 2] = new Vector2(lastX, lastY);
-
-                // /--
-                lastX = randomPoint(true, lastX, true);
-                speedbreaker.add(lastX);
-                lastY = randomPoint(false, lastY, true);
-                vertices[i + 3] = new Vector2(lastX, lastY);
+            // Assign Speed breakers from loaded vertices
+            else {
+                for (int i = 2; i < vertices.length; i += 4) {
+                    speedbreaker.add(vertices[i].x);
+                    speedbreaker.add(vertices[i + 3].x);
+                }
             }
 
             // Create Chain From Saved vertices
@@ -421,7 +430,7 @@ public class GameScreen2 implements Screen {
     // To Handle Input Events
     private void handleTouch() {
         // Return if Tank in Air or Game Over
-        if (!hastanklanded || isGameOver) return;
+        if (!hastanklanded || isGameOver || scores.menuShowing) return;
 
         // Zoom Out on - Press
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD) && camera.zoom > 1) {
@@ -846,7 +855,7 @@ public class GameScreen2 implements Screen {
         Game.batch.end();
 
 
-        // Scores  Drawing on Camera
+        // Scores Scene2d Drawing on Camera
         Game.batch.setProjectionMatrix(scores.stage.getCamera().combined);
         scores.stage.draw();
 
