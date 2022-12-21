@@ -16,16 +16,14 @@ public class ChooseTank implements Screen {
     OrthographicCamera camera;
     Viewport viewport;
     MyGdxGame Game;
-    SpriteBatch sp;
     Texture tank1;
     Texture tank2;
     Texture tank3;
-    Image t1;
-    Image t2;
-    Image t3;
-//    MyGdxGame game;
+
+
+    // Message to Show Status
     String Message;
-    float Messagex,Messagey;
+    float Messagex,Messagey; // Message Coordinates
     float tank1x;
     float tank2x;
     float tank3x;
@@ -34,14 +32,15 @@ public class ChooseTank implements Screen {
     float tankwidth2;
     float tankwidth3;
     float tankheigth;
+
+    // Variable to Store Selected Tanks
     int tankid1=-1;
 //    int tankid2=-1;
+
+    // Bounds to handle touch on buttons
     Rectangle tank1Bounds,tank2Bounds,tank3Bounds;
 
     public ChooseTank(MyGdxGame game) {
-//        camera = new OrthographicCamera();
-//        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-//        viewport.apply();
         Messagex=100;
         Messagey=Gdx.graphics.getHeight()-200;
         Message="Choose tank1";
@@ -79,7 +78,7 @@ public class ChooseTank implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 1, 1);
+        ScreenUtils.clear(38 / 255f, 31 / 255f, 88 / 255f, 1);
 
 
 //        camera.update();
@@ -102,16 +101,23 @@ public class ChooseTank implements Screen {
     }
     private void handleTouch() {
         if (Gdx.input.justTouched()) {
+            // Capture Touch Position
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 //            camera.unproject(touchPos);
 
+
+            // If touched Tank 1
             if (tank1Bounds.contains(touchPos.x, touchPos.y)) {
                 System.out.println("Tank1");
+
+                // Chosen as Player 1's Tank
                 if(tankid1==-1){
                     tankid1=0;
                     Message="Choose tank2";
                 }
+
+                // Chosen as Player 2's Tank
                 else {
                     Game.setScreen(new GameScreen2(Game, "", tankid1,0));
                     dispose();

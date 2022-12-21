@@ -32,16 +32,22 @@ public class SavedScreen implements Screen {
 
     public SavedScreen(final MyGdxGame game) {
         camera = new OrthographicCamera();
+
+        // To Fill Screen
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.apply();
+
         this.game = game;
         preferences = Gdx.app.getPreferences("preferences");
 
+        // List Of Games
         String savedGames = preferences.getString("saved", "1532262046724,1532261046024");
         if (savedGames.equals("")) return;
 
+        // Load in Array
         String[] savedGamesArray = savedGames.split(",");
 
+        // Create Stage with viewport and spritebatch
         stage = new Stage(new ScreenViewport(), game.batch);
 
         Table table = new Table();
@@ -53,12 +59,14 @@ public class SavedScreen implements Screen {
         skin.getFont("font").getData().setScale(4);
 
 
+        // Loop through saved games list and add each on table
         for (int i = 0; i < savedGamesArray.length; i++) {
             table.row().pad(20);
 
             final String gameId = savedGamesArray[i];
 
 
+            // Play Button to load the game
             TextButton playButton =new TextButton("Play", skin);
             playButton.addListener(new ClickListener() {
                 @Override
