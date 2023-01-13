@@ -18,3 +18,13 @@
 <img src="https://user-images.githubusercontent.com/96880251/212358367-0b0a9e67-d842-40c3-94e0-c06eaecc781f.png" width=150>&nbsp
 <img src="https://user-images.githubusercontent.com/96880251/212358384-7bc4e07c-40e4-4bb7-b288-bf05e2f70088.png" width=150>&nbsp
 </p>
+Tank-Stars using libGDX.The objective of the game is the two-player (1 vs 1) game mode where players face off on hilly
+terrain, taking turns firing bombs at one another. Players get a limited fuel ration per turn and are allowed to position 
+themselves for a better shot.The player is allowed to select the power and angle of the trajectory and then fire the shot.
+The effect of the hit (impact on the health) on the tank is based on how close it has been hit. A player can choose from at 
+least 3 tanks before starting the game. The game is over when one player has lost its complete health. We have also provided 
+save button functionality which saves the game state and save the following:
+a) Health of the 2 players
+b) Store the exact position of the tanks
+c) Store the orientation of the ground.
+A player must be able to save as well as load any saved game. 
